@@ -1,0 +1,22 @@
+@charset "UTF-8";
+
+header {
+	height:70px;
+	font-size:43px;
+}
+
+section {
+	height:500px;
+}
+
+footer{
+	height:70px;
+	font-size:12px;
+}
+
+#loginBox {
+	height:350px;
+	width:260px;
+	background-color: #edece4;
+	margin-left:300px;
+}
