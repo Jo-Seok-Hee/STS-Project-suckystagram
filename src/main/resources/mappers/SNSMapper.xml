@@ -40,6 +40,26 @@
 	
 	
 	</select>
+	
+	<select id="selectSignIn" resultType="com.sucky.project.sns.model.SNS">
+	
+		SELECT
+			`id`
+			, `loginId`
+			, `password`
+			, `name`
+			, `nickname`
+			, `email`
+			, `createdAt`
+			, `updatedAt`
+		FROM
+			`user`
+		WHERE
+			`loginId` = #{loginId}
+			AND `password` = #{password}
+	
+	
+	</select>
 
 	
  

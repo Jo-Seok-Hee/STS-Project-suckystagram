@@ -30,21 +30,21 @@
 							<div class="input-group-prepend">
 								<span class="input-group-text"><i class="fas fa-user"></i></span>
 							</div>
-							<input type="text" class="form-control" placeholder="아이디">
+							<input type="text" class="form-control" placeholder="아이디" id="idInput">
 							
 						</div>
 						<div class="input-group form-group mt-3">
 							<div class="input-group-prepend">
 								<span class="input-group-text"><i class="fas fa-key"></i></span>
 							</div>
-							<input type="password" class="form-control" placeholder="비밀번호">
+							<input type="password" class="form-control" placeholder="비밀번호" id="passwordInput">
 						</div>
 						
-						<button class="btn btn-warning text-primary form-control mt-4" >로그인</button>
+						<button class="btn btn-warning text-primary form-control mt-4" id="loginBtn">로그인</button>
 						
 						<br><br><br>
 						<div class="text-center">
-							<label ><a href="#">회원가입하기</a></label>
+							<label ><a href="/user/signUpView">회원가입하기</a></label>
 						</div>
 					</div>
 				</div>
@@ -53,8 +53,53 @@
 			
 			<c:import url="/WEB-INF/jsp/include/footer.jsp" />
 			
+			
+			
 		</div>
 	</div>
+	
+	<script>
+	
+		$(document).ready(function(){
+			
+			$("#loginBtn").on("click", function() {
+				
+				let id = $("#idInput").val();
+				let password = $("#passwordInput").val();
+				
+				if(id == "") {
+					alert("아이디를 입력하세요");
+					return;
+				}
+				
+				if(password == "") {
+					alert("비밀번호를 입력하세요");
+					return;
+				}
+				
+				$.ajax({
+					type:"post",
+					url:"/user/signIn",
+					data:{"loginId":id, "password":password },
+					success:function(data) {
+						if(data.result == "success") {
+							// 로그인 화면으로 이동
+							location.href = "/post/timeline";
+							
+						} else {
+							alert("아이디와 비밀번호가 잘못되었씁니다.");
+						}
+					}, 
+					error:function() {
+						alert("에러 발생");
+					}
+				});
+			});
+		});
+	
+	</script>
+	
+	
 	<%-- 로그인화면 마무리
 	앞으로 할거 
 	 --%>

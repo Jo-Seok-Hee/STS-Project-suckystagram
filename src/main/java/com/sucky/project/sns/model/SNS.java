@@ -1,5 +1,7 @@
 package com.sucky.project.sns.model;
 
+import java.util.Date;
+
 public class SNS {
 	private int id;
 	private String loginId;
@@ -7,6 +9,8 @@ public class SNS {
 	private String name;
 	private String nickname;
 	private String email;
+	private Date createdAt;
+	private Date updatedAt;
 	public int getId() {
 		return id;
 	}
@@ -43,5 +47,16 @@ public class SNS {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	
+	public Date getCreatedAt() {
+		return createdAt;
+	}
+	public void setCreatedAt(Date createdAt) {
+		this.createdAt = createdAt;
+	}
+	public Date getUpdatedAt() {
+		return updatedAt;
+	}
+	public void setUpdatedAt(Date updatedAt) {
+		this.updatedAt = updatedAt;
+	}
 }

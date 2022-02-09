@@ -5,9 +5,8 @@ header {
 	font-size:43px;
 }
 
-section {
-	height:500px;
-}
+
+
 
 footer{
 	height:70px;
@@ -24,3 +23,14 @@ footer{
 #signUpBox {
 	background-color: #edece4;
 }
+
+#timeline {
+	width:500px;
+	
+}
+
+#postHeader {
+	width:500px;
+	height:50px;
+}
+

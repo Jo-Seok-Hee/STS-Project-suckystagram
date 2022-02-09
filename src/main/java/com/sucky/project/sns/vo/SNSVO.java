@@ -1,9 +1,13 @@
 package com.sucky.project.sns.vo;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.sucky.project.common.EncryptUtils;
 import com.sucky.project.sns.dao.SNSDAO;
+import com.sucky.project.sns.model.SNS;
 
 @Service
 public class SNSVO {
@@ -12,8 +16,16 @@ public class SNSVO {
 	private SNSDAO snsDAO;
 	
 	public int addSignUp(String loginId, String password, String name, String nickname, String email) {
+		String encPassword = EncryptUtils.md5(password);
 		
-		return snsDAO.insertSignUp(loginId, password, name, nickname, email);
+		
+		return snsDAO.insertSignUp(loginId, encPassword, name, nickname, email);
+	}
+	
+	public SNS getSignIn(String loginId, String password) {
+		
+		String encPassword = EncryptUtils.md5(password);
+		return snsDAO.selectSignIn(loginId, encPassword);
 	}
 	
 	public boolean isDuplicatedId(String loginId) {

@@ -3,11 +3,16 @@ package com.sucky.project.sns;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+
+import com.sucky.project.sns.model.SNS;
 import com.sucky.project.sns.vo.SNSVO;
 
 @RestController
@@ -35,6 +40,33 @@ public class SNSRestController {
 			result.put("result", "fail");
 		}
 		
+		return result;
+	}
+	
+	@PostMapping("/user/signIn")
+	public Map<String, String> SignIn(
+			@RequestParam("loginId") String loginId,
+			@RequestParam("password") String password,
+			HttpServletRequest request
+			){
+		
+		SNS sns = snsVO.getSignIn(loginId, password);
+		
+		Map<String, String> result = new HashMap<>();
+		if(sns != null) {
+			result.put("result","success");
+			//성공시 세션 부여
+			HttpSession session =  request.getSession();
+			//id, loginId, name 
+			session.setAttribute("userId", sns.getId());
+			session.setAttribute("userLoginId", sns.getLoginId());
+			session.setAttribute("userName", sns.getName());
+			
+			
+			
+		} else {
+			result.put("result","fail");
+		}
 		return result;
 	}
 	

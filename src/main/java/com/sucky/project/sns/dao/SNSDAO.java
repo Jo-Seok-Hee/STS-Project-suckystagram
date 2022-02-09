@@ -3,6 +3,8 @@ package com.sucky.project.sns.dao;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+import com.sucky.project.sns.model.SNS;
+
 @Repository
 public interface SNSDAO {
 	
@@ -16,4 +18,9 @@ public interface SNSDAO {
 			);
 	
 	public int checkDuplicatedId(@Param("loginId")String loginId);
+	
+	public SNS selectSignIn(
+			@Param("loginId")String loginId,
+			@Param("password")String password
+			);
 }
