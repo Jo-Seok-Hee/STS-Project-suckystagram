@@ -60,7 +60,7 @@ public class SNSRestController {
 			//id, loginId, name 
 			session.setAttribute("userId", sns.getId());
 			session.setAttribute("userLoginId", sns.getLoginId());
-			session.setAttribute("userName", sns.getName());
+			session.setAttribute("userName", sns.getNickname());
 			
 			
 			

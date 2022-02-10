@@ -24,7 +24,7 @@
 			<c:import url="/WEB-INF/jsp/include/header.jsp" />
 			
 			<section class="d-flex justify-content-center align-items-center">
-				<div id="loginBox" >
+				<div id="loginBox" class="mt-3 mb-3" >
 					<div class="container">
 						<div class="input-group form-group mt-5">
 							<div class="input-group-prepend">

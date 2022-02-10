@@ -41,4 +41,6 @@ public class SNSVO {
 			return true;
 		}
 	}
+	
+	
 }
