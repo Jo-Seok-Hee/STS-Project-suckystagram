@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import com.sucky.project.sns.model.Post;
+import com.sucky.project.sns.vo.PostSNSVO;
 import com.sucky.project.sns.vo.SNSVO;
 
 
@@ -20,13 +21,15 @@ import com.sucky.project.sns.vo.SNSVO;
 public class PostSNSController {
 	
 	@Autowired
-	private SNSVO snsVO;
+	private PostSNSVO postSNSVO;
 	
 	@GetMapping("/post/timeline")
-	public String timeline(HttpServletRequest request,Model model) {
+	public String timeline(Model model) {
 		
-		HttpSession session =  request.getSession();
-		int userId = (Integer)session.getAttribute("userId");
+		List<Post> postList = postSNSVO.getPostList();
+		
+		model.addAttribute("postList", postList);
+		
 		
 		
 		return "/post/timeline";

@@ -86,7 +86,7 @@ public class FileManagerService {
 				Files.delete(path);
 			} catch (Exception e) {
 				// TODO: handle exception
-				logger.error("FileManagerService::removeFile - 파일 삭제 싪패");
+				logger.error("FileManagerService::removeFile - 파일 삭제 실패");
 				e.printStackTrace();
 			}
 		}

@@ -34,42 +34,47 @@
 						<%--파일첨부 업로드 버튼 --%>
 						<div class="d-flex justify-content-between">
 							<span class="img-icon"> <i class="bi bi-image" id="imgBtn"></i></span>
-							<input type="file" class="form-control d-none" id="fileInput">
-							<button type="button" class="btn btn-primary text-white" id="uploadBtn">업로드</button>
+							<input type="file" class="form-control" id="fileInput">
+							<button class="btn btn-primary text-white" id="uploadBtn">업로드</button>
 						</div>
 					
 					</div>
 					
 					<%--게시글 1 --%>
+					<c:forEach var="post" items="${postList }">
 					<div class="mt-4">
 						<%--게시글 헤더 --%>
 						<div id="postHeader" class="bg-warning d-flex align-items-center justify-content-between">
-							<label class="ml-3 font-weight-bold">글쓴이 ex)럭키</label>
+							<%-- 질문 ***** --%><label class="ml-3 font-weight-bold">${post.userName }</label>
 							<label class="mr-3">좋아요 N개</label>
 						</div>
 						
 						<%--게시글 사진 --%>
 						<div class="container">
-							<img class="w-100 mt-2" src="https://cdn.pixabay.com/photo/2022/01/27/19/14/flowers-6972916_960_720.jpg">
+							<img class="w-100 mt-2" src="${post.imagePath }">
+						</div>
+						<div class="d-flex justify-content-center">
+							<label class="font-weight-bold">${post.content }</label>
 						</div>
 						<%--게시글 좋아요, 댓글, 댓글추가 --%>
 						
 						<div>
 							<%--댓글 반복문 --%>
 							<div class="d-flex mt-2">
-								<label class="ml-3 font-weight-bold col-2">${userName }</label>
-								<label class="ml-3 col-8">오늘 놀러갔다가 아이가너무이뻐서 나도모르게 찍었습니다 .너무귀엽쥬</label>
+								<label class="ml-3 font-weight-bold col-2">처키</label>
+								<label class="ml-3 col-8">난 저번주에 갔다왔지롱</label>
 							</div>
 							<%--댓글 추가 --%>
 							<div class="input-group mt-2 mb-4">
 								<span class="mt-1 ml-2">${userName }</span>
-								<input type="text" class="form-control ml-3" placeholder="댓글을 입력해주세요.">
+								<input type="text" class="form-control ml-3" placeholder="댓글을 입력해주세요." id="commentInput${post.id }">
 								<div class="">
-									<button type="button" class="btn btn-primary">게시</button>
+									<button  class="btn btn-primary commentBtn" data-post-id="${post.id }">게시</button>
 								</div>
 							</div>
 						</div>
 					</div>
+					</c:forEach>
 					
 				</div>
 				
@@ -88,54 +93,76 @@
 	<script>
 		$(document).ready(function(){
 			
-			$("#imgBtn").on("click", function() {
-				// fileInput 클릭 효과
-				$("#fileInput").click();
+			$("#uploadBtn").on("click",function(){
 				
-			});
-			
-			$("#uploadbtn").on("click",function(){
-				let content= $("#contentInput").val().trim();
 				
-				if(content == ""){
-					alert("내용을 입력하세요.");
+				let content = $("#contentInput").val().trim();
+				
+				
+				if(content == "") {
+					alert("내용을 입력하세요");
 					return ;
 				}
 				
-				//파일 유효성 검사
-				
-				if($("#fileInput"))[0].files.length == 0{
-					alert("파일을 선택해주세요.");
-					return ;
+				if($("#fileInput")[0].files.length == 0) {
+					alert("파일을 선택해주세요");
+					return;
 				}
 				
 				var formData = new FormData();
 				formData.append("content",content);
-				formData.append("file", $("#fileInput")[0].files[0]);
-				
+				formData.append("file",$("#fileInput")[0].files[0]);
 				
 				$.ajax({
-					
 					type:"post",
 					url:"/post/uploadPost",
 					data:formData,
-					enctype:"multipart"/form-data",
-					processData:false, 
+					enctype:"multipart/form-data",
+					processData:false,
 					contentType:false,
-					success:function(data) {
-						if(data.result == "success") {
-							location.href="/post/timeline";
+					success:function(data){
+						
+						if(data.result == "success"){
+							alert("글쓰기 성공");
+							location.reload();
 						} else {
-							alert("업로드 실패");
+							alert("글쓰기 실패");
 						}
 					},
-					error:function() {
-						alert("에러발생");
-					}					
+					error:function(){
+						alert("글쓰기 에러");
+					}
 				});
 			});
-		})
-	
+			
+			$(".commentBtn").on("click", function() {
+				
+				let postId = $(this).data("post-id");
+				
+				let content = $("#commentInput" + postId).val();
+				
+				
+				$.ajax({
+					type:"post",
+					url:"/post/uploadComment",
+					data:{"postId":postId, "content":content},
+					success:function(data) {
+						if(data.result == "success") {
+							alert("댓글 성공");
+							location.reload();
+						} else {
+							alert("댓글 실패");
+						}
+						
+					}, error:function() {
+						alert("댓글쓰기 에러");
+					}
+					
+				});
+				
+			});
+			
+		});
 	
 	</script>
 </body>
