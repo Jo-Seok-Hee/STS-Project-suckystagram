@@ -41,35 +41,50 @@
 					</div>
 					
 					<%--게시글 1 --%>
-					<c:forEach var="post" items="${postList }">
+					<c:forEach var="postDetail" items="${postList }">
 					<div class="mt-4">
 						<%--게시글 헤더 --%>
 						<div id="postHeader" class="bg-warning d-flex align-items-center justify-content-between">
-							<%-- 질문 ***** --%><label class="ml-3 font-weight-bold">${post.userName }</label>
-							<label class="mr-3">좋아요 N개</label>
+							<%-- 질문 ***** --%><label class="ml-3 font-weight-bold">${postDetail.post.userName }</label>
+							<div>
+								<label class="mr-3">좋아요 ${postDetail.likeCount }개</label>
+								<a href="#" class="likeBtn" data-post-id="${postDetail.post.id }" >
+									<c:choose>
+										<c:when test="${postDetail.like }">♥</c:when>
+									
+									</c:choose>
+									<c:otherwise>
+										♡
+									
+									</c:otherwise>
+								
+								</a>
+							</div>
 						</div>
 						
 						<%--게시글 사진 --%>
 						<div class="container">
-							<img class="w-100 mt-2" src="${post.imagePath }">
+							<img class="w-100 mt-2" src="${postDetail.post.imagePath }">
 						</div>
 						<div class="d-flex justify-content-center">
-							<label class="font-weight-bold">${post.content }</label>
+							<label class="font-weight-bold">${postDetail.post.content }</label>
 						</div>
 						<%--게시글 좋아요, 댓글, 댓글추가 --%>
 						
 						<div>
 							<%--댓글 반복문 --%>
-							<div class="d-flex mt-2">
-								<label class="ml-3 font-weight-bold col-2">처키</label>
-								<label class="ml-3 col-8">난 저번주에 갔다왔지롱</label>
-							</div>
+							<c:forEach var="comment" items="${postDetail.commentList }">
+								<div class="d-flex mt-2">
+									<label class="ml-3 font-weight-bold col-2">${comment.userName }</label>
+									<label class="ml-3 col-8">${comment.content }</label>
+								</div>
+							</c:forEach>
 							<%--댓글 추가 --%>
 							<div class="input-group mt-2 mb-4">
 								<span class="mt-1 ml-2">${userName }</span>
-								<input type="text" class="form-control ml-3" placeholder="댓글을 입력해주세요." id="commentInput${post.id }">
+								<input type="text" class="form-control ml-3" placeholder="댓글을 입력해주세요." id="commentInput${postDetail.post.id }">
 								<div class="">
-									<button  class="btn btn-primary commentBtn" data-post-id="${post.id }">게시</button>
+									<button  class="btn btn-primary commentBtn" data-post-id="${postDetail.post.id }">게시</button>
 								</div>
 							</div>
 						</div>
@@ -141,6 +156,11 @@
 				
 				let content = $("#commentInput" + postId).val();
 				
+				if(content == ""){
+					alert("댓글을 입력하세요");
+					return ;
+				}
+				
 				
 				$.ajax({
 					type:"post",
@@ -162,6 +182,27 @@
 				
 			});
 			
+			$(".likeBtn").on("click",function(){
+				let postId = $(this).data("post-id");
+				
+				$.ajax({
+					type:"get",
+					url:"/post/like",
+					data:{"postId":postId},
+					success:function(data){
+						
+						if(data.result == "success"){
+							alert("좋아요!!");
+							location.reload();
+						} else{
+							alert("실패");
+						}
+					}, error:function(){
+						alert("에러발생");
+					}
+					
+				});
+			});
 		});
 	
 	</script>

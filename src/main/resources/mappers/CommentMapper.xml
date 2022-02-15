@@ -23,10 +23,22 @@
 			, now()
 		
 		)
-		
-		
-	
 	</insert>
+	<select id="selectCommentList" resultType="com.sucky.project.sns.model.Comment">
+
+		SELECT
+			`id`
+			, `postId`
+			, `userId`
+			, `userName`
+			, `content`
+			, `createdAt`
+			, `updatedAt`
+		FROM
+			`comment`
+		WHERE
+			`postId` = #{postId}
+	</select>
 
 
 </mapper>
