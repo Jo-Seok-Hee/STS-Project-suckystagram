@@ -14,9 +14,20 @@ public class LikeVO {
 	private LikeDAO likeDAO;
 	
 	
-	public int addLike(int postId,int userId) {
+	public boolean like(int postId,int userId) {
 		
-		return likeDAO.insertLike(postId, userId);
+		//좋아요 상태면 >> 취소
+		//비좋아요 상태면 >> 좋아요
+		
+		if(this.isLike(postId, userId) == true) { //좋아요 상태 >> 취소
+			this.removeLike(postId, userId);
+			return false;
+		} else { //비좋아요 >> 좋아요
+			likeDAO.insertLike(postId, userId);
+			return true;
+		}
+		
+
 	}
 	
 	//postId로 좋아요 개수 조회
@@ -37,4 +48,10 @@ public class LikeVO {
 		//return ~(likeDAO.S
 	
 	}
+	
+	public int removeLike(int postId, int userId) {
+		
+		return likeDAO.deleteLike(postId, userId);
+	}
+	
 }

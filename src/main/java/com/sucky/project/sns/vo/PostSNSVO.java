@@ -62,5 +62,12 @@ public class PostSNSVO {
 //		return postSNSDAO.selectPost();
 	}
 	
+	public int removePost(
+			int postId
+			,int userId
+			) {
+		return postSNSDAO.deletePost(postId, userId);
+	}
+	
 	
 }

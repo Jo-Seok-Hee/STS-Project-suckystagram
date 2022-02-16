@@ -41,6 +41,16 @@
  	
  	
  	</select>
+ 	
+ 	<delete id="deletePost">
+ 		
+ 		DELETE FROM `post`
+ 		WHERE
+ 			`id` = #{postId} AND
+ 			`userId` = #{userId}
+ 	
+ 	
+ 	</delete>
  
  
  

@@ -18,4 +18,10 @@ public interface PostSNSDAO {
 			);
 	
 	public List<Post> selectPost();
+	
+	public int deletePost(
+			@Param("postId") int postId
+			, @Param("userId") int userId
+			
+			);
 }

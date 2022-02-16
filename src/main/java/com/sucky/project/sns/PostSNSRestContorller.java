@@ -44,4 +44,28 @@ public class PostSNSRestContorller {
 		return result;
 		
 	}
+	
+	@PostMapping("/post/deletePost")
+	public Map<String, String> deletePost(
+			@RequestParam("postId") int postId
+			,HttpServletRequest request
+			){
+		
+		HttpSession session = request.getSession();
+		int userId = (Integer)session.getAttribute("userId");
+		
+		int count = postSNSVO.removePost(postId, userId);
+		
+		Map<String, String> result = new HashMap<>();
+		
+		if(count == 1) {
+			result.put("result", "success");
+		} else {
+			result.put("result", "fail");
+		}
+		
+		return result;
+		
+		//2022-02-16 마무리
+	}
 }

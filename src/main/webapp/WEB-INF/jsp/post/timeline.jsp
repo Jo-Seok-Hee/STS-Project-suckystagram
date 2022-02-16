@@ -45,20 +45,26 @@
 					<div class="mt-4">
 						<%--게시글 헤더 --%>
 						<div id="postHeader" class="bg-warning d-flex align-items-center justify-content-between">
-							<%-- 질문 ***** --%><label class="ml-3 font-weight-bold">${postDetail.post.userName }</label>
+							<label class="ml-3 font-weight-bold">${postDetail.post.userName }
+								<button type="button" class="btn btn-warning" data-toggle="modal" data-target="#postModal">
+								    ...
+								</button>
+							</label>							
+							
 							<div>
 								<label class="mr-3">좋아요 ${postDetail.likeCount }개</label>
+								
 								<a href="#" class="likeBtn" data-post-id="${postDetail.post.id }" >
 									<c:choose>
-										<c:when test="${postDetail.like }">♥</c:when>
-									
+										<c:when test="${postDetail.like }">
+												<i class="bi bi-heart-fill heart-icon text-danger"></i>
+										</c:when>
+										<c:otherwise>
+												<i class="bi bi-heart heart-icon text-dark"></i>	
+										</c:otherwise>
 									</c:choose>
-									<c:otherwise>
-										♡
-									
-									</c:otherwise>
-								
 								</a>
+								
 							</div>
 						</div>
 						
@@ -83,11 +89,27 @@
 							<div class="input-group mt-2 mb-4">
 								<span class="mt-1 ml-2">${userName }</span>
 								<input type="text" class="form-control ml-3" placeholder="댓글을 입력해주세요." id="commentInput${postDetail.post.id }">
-								<div class="">
+								<div >
 									<button  class="btn btn-primary commentBtn" data-post-id="${postDetail.post.id }">게시</button>
 								</div>
 							</div>
 						</div>
+					</div>
+					
+					<!-- Modal -->
+					<div class="modal fade" id="postModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+					  <div class="modal-dialog modal-dialog-centered" role="document">
+					    <div class="modal-content">
+			
+					      <div class="modal-body text-center">
+					        <button type="button" class="btn btn-danger deletePostBtn"  data-post-id="${postDetail.post.id }">삭제하기</button>
+					      </div>
+					      <div class="modal-footer">
+					        <button type="button" class="btn btn-secondary" data-dismiss="modal">뒤로가기</button>
+					        
+					      </div>
+					    </div>
+					  </div>
 					</div>
 					</c:forEach>
 					
@@ -101,6 +123,8 @@
 			<c:import url="/WEB-INF/jsp/include/footer.jsp" />
 		
 		</div>
+		
+
 	
 	
 	</div>
@@ -150,8 +174,8 @@
 				});
 			});
 			
-			$(".commentBtn").on("click", function() {
-				
+			$(".commentBtn").on("click", function(e) {
+				e.preventDefault();
 				let postId = $(this).data("post-id");
 				
 				let content = $("#commentInput" + postId).val();
@@ -182,7 +206,9 @@
 				
 			});
 			
-			$(".likeBtn").on("click",function(){
+			$(".likeBtn").on("click",function(e){
+				
+				e.preventDefault();
 				let postId = $(this).data("post-id");
 				
 				$.ajax({
@@ -190,18 +216,44 @@
 					url:"/post/like",
 					data:{"postId":postId},
 					success:function(data){
-						
+						location.reload();
+					}, error:function(){
+						alert("좋아요 에러 발생");
+					}
+					
+				});
+			});
+			
+			<%--
+			$(".unlikeBtn").on("click",function(e){
+				let postId = $(this).data("post-id");
+				
+				$.ajax({
+					type:"get",
+					url:"/post/unlike",
+					date:{"postId":postId},
+					success:function(data){
 						if(data.result == "success"){
-							alert("좋아요!!");
+							alert("좋아요취소 성공!!");
 							location.reload();
 						} else{
 							alert("실패");
 						}
 					}, error:function(){
-						alert("에러발생");
+						alert("에러");
 					}
+						
+					
 					
 				});
+			});
+			--%>
+			
+			$(".deletePostBtn").on("click",function(e){
+				e.preventDefault();
+				let postId = $(this).data("post-id");
+				
+				$.ajax
 			});
 		});
 	
