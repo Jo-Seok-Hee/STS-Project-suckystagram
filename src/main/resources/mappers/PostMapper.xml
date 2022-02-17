@@ -42,7 +42,7 @@
  	
  	</select>
  	
- 	<delete id="deletePost">
+ 	<delete id="deletePost" parameterType="map">
  		
  		DELETE FROM `post`
  		WHERE
@@ -51,6 +51,23 @@
  	
  	
  	</delete>
+ 	
+ 	<select id="selectPostImage" parameterType="int" resultType="com.sucky.project.sns.model.Post">
+ 		
+ 	 	SELECT 
+ 			`id`
+ 			, `userId`
+ 			, `userName`
+ 			, `content`
+ 			, `imagePath`
+ 			, `createdAt`
+ 			, `updatedAt`
+ 		FROM
+ 			`post`
+ 		WHERE
+ 			`id` = #{postId}
+ 	
+ 	</select>
  
  
  

@@ -24,4 +24,6 @@ public interface PostSNSDAO {
 			, @Param("userId") int userId
 			
 			);
+	
+	public Post selectPostImage(@Param("postId") int postId);
 }

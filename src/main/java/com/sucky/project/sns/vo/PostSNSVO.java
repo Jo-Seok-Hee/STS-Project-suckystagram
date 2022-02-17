@@ -66,6 +66,14 @@ public class PostSNSVO {
 			int postId
 			,int userId
 			) {
+		//좋아요 삭제
+		likeVO.removeLikeByPost(postId);
+		//댓글 삭제
+		commentVO.removeComment(postId);
+		//파일 삭제
+		Post post = postSNSDAO.selectPostImage(postId);
+		FileManagerService.removeFile(post.getImagePath());
+		
 		return postSNSDAO.deletePost(postId, userId);
 	}
 	

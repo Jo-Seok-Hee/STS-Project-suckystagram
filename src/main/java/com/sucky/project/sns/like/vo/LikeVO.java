@@ -54,4 +54,11 @@ public class LikeVO {
 		return likeDAO.deleteLike(postId, userId);
 	}
 	
+	public int removeLikeByPost(int postId) {
+		
+		return likeDAO.deleteLikeByPost(postId);
+	}
+	
+
+	
 }

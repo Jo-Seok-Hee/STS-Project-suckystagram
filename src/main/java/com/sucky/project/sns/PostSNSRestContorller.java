@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -45,7 +46,7 @@ public class PostSNSRestContorller {
 		
 	}
 	
-	@PostMapping("/post/deletePost")
+	@GetMapping("/post/deletePost")
 	public Map<String, String> deletePost(
 			@RequestParam("postId") int postId
 			,HttpServletRequest request
@@ -66,6 +67,6 @@ public class PostSNSRestContorller {
 		
 		return result;
 		
-		//2022-02-16 마무리
+		
 	}
 }

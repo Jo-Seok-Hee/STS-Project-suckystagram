@@ -54,7 +54,13 @@
 	
 	</delete>
 
-
+	<delete id="deleteLikeByPost" parameterType="map">
+		
+		DELETE FROM `like`
+		WHERE 
+			`postId` = #{postId}
+	
+	</delete>
 
 
 

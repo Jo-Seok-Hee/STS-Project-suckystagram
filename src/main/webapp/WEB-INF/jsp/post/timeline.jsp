@@ -34,7 +34,7 @@
 						<%--파일첨부 업로드 버튼 --%>
 						<div class="d-flex justify-content-between">
 							<span class="img-icon"> <i class="bi bi-image" id="imgBtn"></i></span>
-							<input type="file" class="form-control" id="fileInput">
+							<input type="file" class="form-control d-none" id="fileInput">
 							<button class="btn btn-primary text-white" id="uploadBtn">업로드</button>
 						</div>
 					
@@ -46,9 +46,10 @@
 						<%--게시글 헤더 --%>
 						<div id="postHeader" class="bg-warning d-flex align-items-center justify-content-between">
 							<label class="ml-3 font-weight-bold">${postDetail.post.userName }
-								<button type="button" class="btn btn-warning" data-toggle="modal" data-target="#postModal">
+								<button type="button" class="btn btn-warning moreBtn" data-post-id="${postDetail.post.id }" data-user-id="${postDetail.post.userId }" data-toggle="modal" data-target="#postModal">
 								    ...
 								</button>
+								
 							</label>							
 							
 							<div>
@@ -96,21 +97,7 @@
 						</div>
 					</div>
 					
-					<!-- Modal -->
-					<div class="modal fade" id="postModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-					  <div class="modal-dialog modal-dialog-centered" role="document">
-					    <div class="modal-content">
-			
-					      <div class="modal-body text-center">
-					        <button type="button" class="btn btn-danger deletePostBtn"  data-post-id="${postDetail.post.id }">삭제하기</button>
-					      </div>
-					      <div class="modal-footer">
-					        <button type="button" class="btn btn-secondary" data-dismiss="modal">뒤로가기</button>
-					        
-					      </div>
-					    </div>
-					  </div>
-					</div>
+
 					</c:forEach>
 					
 				</div>
@@ -124,6 +111,22 @@
 		
 		</div>
 		
+					<!-- Modal -->
+		<div class="modal fade" id="postModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+		  <div class="modal-dialog modal-dialog-centered" role="document">
+		    <div class="modal-content">
+			
+			     <div class="modal-body text-center">
+		        <button type="button" class="btn btn-danger " id="deleteBtn"  >삭제하기</button>
+			     </div>
+		      <div class="modal-footer">
+			       <button type="button" class="btn btn-secondary" data-dismiss="modal">뒤로가기</button>
+			        
+		      </div>
+		    </div>
+		  </div>
+		</div>
+		
 
 	
 	
@@ -131,6 +134,19 @@
 	
 	<script>
 		$(document).ready(function(){
+			
+			$("#imgBtn").on("click",function(){
+				
+				//다른 버튼 클릭기능
+				$("#fileInput").click();
+			});
+			
+
+
+
+			
+			
+			
 			
 			$("#uploadBtn").on("click",function(){
 				
@@ -231,7 +247,7 @@
 				$.ajax({
 					type:"get",
 					url:"/post/unlike",
-					date:{"postId":postId},
+					data:{"postId":postId},
 					success:function(data){
 						if(data.result == "success"){
 							alert("좋아요취소 성공!!");
@@ -249,12 +265,67 @@
 			});
 			--%>
 			
+			$(".moreBtn").on("click",function(e){
+				e.preventDefault();
+				let postId = $(this).data("post-id");
+				
+				$("#deleteBtn").data("post-id",postId);
+				
+			});
+			
+			$("#deleteBtn").on("click",function(){
+				
+				let postId = $(this).data("post-id");
+				
+				$.ajax({
+					//tudse
+					type:"get",
+					url:"/post/deletePost",
+					data:{"postId":postId},
+					success:function(data){
+						
+						if(data.result == "success"){
+							alert("글 삭제 성공!");
+							location.reload();
+						} else {
+							alert("삭제할 수 있는 권한이 없습니다.");
+						}
+						
+					}, error:function(){
+						alert("에러 발생!");
+					}
+						
+		
+					
+				});
+			});
+			<%-- 만들어본 삭제야작스
 			$(".deletePostBtn").on("click",function(e){
 				e.preventDefault();
 				let postId = $(this).data("post-id");
 				
-				$.ajax
+				$.ajax({
+					//tudse
+					type:"post",
+					url:"/post/deletePost",
+					data:{"postId":postId},
+					success:function(data){
+						
+						if(data.result == "success"){
+							alert("글 삭제 성공!");
+						} else {
+							alert("삭제할 수 있는 권한이 없습니다.");
+						}
+						
+					}, error(){
+						alert("에러 발생!");
+					}
+						
+		
+					
+				});
 			});
+			--%>
 		});
 	
 	</script>
