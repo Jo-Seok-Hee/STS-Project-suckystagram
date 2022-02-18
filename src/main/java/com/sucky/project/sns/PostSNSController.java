@@ -38,6 +38,7 @@ public class PostSNSController {
 		List<PostDetail> postList = postSNSVO.getPostList(userId);
 		
 		model.addAttribute("postList", postList);
+		model.addAttribute("userId", userId);
 		
 
 		

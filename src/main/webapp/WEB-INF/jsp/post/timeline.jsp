@@ -46,9 +46,23 @@
 						<%--게시글 헤더 --%>
 						<div id="postHeader" class="bg-warning d-flex align-items-center justify-content-between">
 							<label class="ml-3 font-weight-bold">${postDetail.post.userName }
-								<button type="button" class="btn btn-warning moreBtn" data-post-id="${postDetail.post.id }" data-user-id="${postDetail.post.userId }" data-toggle="modal" data-target="#postModal">
-								    ...
-								</button>
+									<%--세션에서 얻어온 유저아이디 --%>
+									<c:set var="sessionUserId" value="${userId }"/>
+									<%--포스트에서 얻어온 유저아이디 --%>
+									<c:set var="postUserId" value="${postDetail.post.userId}"/>
+	
+										
+									<c:choose>
+										<c:when test="${sessionUserId eq postUserId }">
+											<button type="button" class="btn btn-warning moreBtn"  data-post-id="${postDetail.post.id }" data-toggle="modal" data-target="#postModal">
+											...
+											</button>
+										</c:when>
+										<c:otherwise>
+										
+										</c:otherwise>
+									
+									</c:choose>
 								
 							</label>							
 							
@@ -84,6 +98,7 @@
 								<div class="d-flex mt-2">
 									<label class="ml-3 font-weight-bold col-2">${comment.userName }</label>
 									<label class="ml-3 col-8">${comment.content }</label>
+									<button class="btn btn-danger deleteCommentBtn" data-post-id="${postDetail.post.id }">삭제</button>
 								</div>
 							</c:forEach>
 							<%--댓글 추가 --%>
@@ -140,12 +155,6 @@
 				//다른 버튼 클릭기능
 				$("#fileInput").click();
 			});
-			
-
-
-
-			
-			
 			
 			
 			$("#uploadBtn").on("click",function(){
@@ -298,6 +307,13 @@
 		
 					
 				});
+			});
+			
+			$(".deleteCommentBtn").on("click",function(e){
+				e.preventDefault();
+				
+				let postId = $(this).data("post-id");
+				//2022-02-18 종료
 			});
 			<%-- 만들어본 삭제야작스
 			$(".deletePostBtn").on("click",function(e){
